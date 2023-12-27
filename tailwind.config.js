@@ -14,9 +14,20 @@ export default {
         'Baloo': ['Baloo Bhai 2', 'cursive'],
         'Archivo': ['Archivo Black', 'sans-serif'],
         'Poppins': ['Poppins', 'sans-serif'],
-      }
+        'Google': ['Google Sans Text'],
+      },
+      fontWeight:{
+        'extra-light': 100,
+        'light': 300,
+        'normal': 400,
+        'medium': 500,
+        'mota': 550,
+        'semi-bold': 600,
+        'bold': 700,
+        'extra-bold': 800,
+        'black': 900, 
     },
   },
   plugins: [],
 }
-
+}

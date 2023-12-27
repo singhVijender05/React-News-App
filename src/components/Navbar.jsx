@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom';
 import newslogo from '/Images/newslogo.jpg'
 import linkedinlogo from '/Images/linkedin.jpeg'
 import { IoSearchOutline } from "react-icons/io5";
+import Socialhandles from "./Socialhandles"
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMoonOutline } from "react-icons/io5";
@@ -10,7 +12,30 @@ import { IoMoonOutline } from "react-icons/io5";
 
 function Navbar(props) {
   const [input,setInput]=useState('')
-  const categories=['Home','For You','India','World','Local','Business','Technology','Entertainment','Sports','Science']
+
+  const [settingOn,setSetting]=useState(false)
+  
+  
+  const handleSettingBtn=(e)=>{
+    setSetting((prevSetting)=>!prevSetting) 
+  }
+  useEffect(() => {
+    const e = document.getElementById('setting');
+    const socialbox = document.getElementById('socialbox');
+  
+    if (e) {
+      settingOn ? e.classList.add('-rotate-45') : e.classList.remove('-rotate-45');
+    }
+    
+    if (settingOn && socialbox) {
+      socialbox.classList.add('rotate-45');
+    } else if (socialbox) {
+      socialbox.classList.remove('rotate-45');
+    }
+  }, [settingOn]);
+  
+
+  const categories=['','For You','India','World','Local','Business','Technology','Entertainment','Sports','Science']
   return (
     <div className='text-white bg-[#202124]'>
     <div className='navtop h-16 w-full p-2 flex '>
@@ -24,8 +49,11 @@ function Navbar(props) {
             <div className='space-x-2 flex items-center'><span className='inline-block p-1'><IoHelpCircleOutline className='h-7 w-8 cursor-pointer ' />
                 </span>
                 
-                <span className='inline-block p-1 relative'><IoSettingsOutline className='h-6 w-7 cursor-pointer ' />
-                  <SocialHandles/>
+                <span id='setting' onClick={handleSettingBtn} className='inline-block p-1 relative cursor-pointer'><IoSettingsOutline className='h-6 w-7 cursor-pointer ' />
+                 {
+                  settingOn? <div id='socialbox' className=''><Socialhandles/></div>:''
+                 }
+                 
                 </span>
                 
             </div>
@@ -36,11 +64,13 @@ function Navbar(props) {
        </div>
 </div>
 
-   <div className="navbottom w-full px-2 py-3 border-b-[1px] border-gray-300 mt-1">
-     <ul className='pl-5 no-underline flex justify-start items-center space-x-11'>
+   <div className="navbottom w-full px-2 py-3 border-b-[1px] border-gray-300 mt-1 text-lg">
+     <ul className='pl-5 no-underline flex justify-center items-center space-x-11'>
         {
             categories.map((category,index)=>{
-                return (<li className='hover:underline underline-offset-1 cursor-pointer' key={index}><a href="">{category}</a></li>)
+                return (<li className='hover:underline underline-offset-1 cursor-pointer text-white' key={index}><NavLink key={'/'+category} to={'/'+category}>{
+                  category===''? 'Home': category
+                }</NavLink></li>)
             })
         }
      </ul>
