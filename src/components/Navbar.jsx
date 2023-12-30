@@ -10,7 +10,7 @@ import { IoMoonOutline } from "react-icons/io5";
 
 
 
-function Navbar(props) {
+function Navbar({categories,changeThemeMode}) {
   const [input,setInput]=useState('')
 
   const [settingOn,setSetting]=useState(false)
@@ -35,7 +35,7 @@ function Navbar(props) {
   }, [settingOn]);
   
 
-  const categories=['','For You','India','World','Local','Business','Technology','Entertainment','Sports','Science']
+  // const categories=['','For You','India','World','Local','Business','Technology','Entertainment','Sports','Science']
   return (
     <div className='text-white bg-[#202124]'>
     <div className='navtop h-16 w-full p-2 flex '>
@@ -57,7 +57,7 @@ function Navbar(props) {
                 </span>
                 
             </div>
-            <div className='flex items-center space-x-2'><span className='inline-block p-1'><IoMoonOutline onClick={()=>props.changeThemeMode()} className=' cursor-pointer h-7 w-8 '/>
+            <div className='flex items-center space-x-2'><span className='inline-block p-1'><IoMoonOutline onClick={()=>changeThemeMode()} className=' cursor-pointer h-7 w-8 '/>
                 </span>
                 
             </div>
@@ -65,7 +65,7 @@ function Navbar(props) {
 </div>
 
    <div className="navbottom w-full px-2 py-3 border-b-[1px] border-gray-300 mt-1 text-lg">
-     <ul className='pl-5 no-underline flex justify-center items-center space-x-11'>
+     <ul className='pl-5 no-underline flex  items-center justify-evenly lg:px-20x'>
         {
             categories.map((category,index)=>{
                 return (<li className='hover:underline underline-offset-1 cursor-pointer text-white' key={index}><NavLink key={'/'+category} to={'/'+category}>{

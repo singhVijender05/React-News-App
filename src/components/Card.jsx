@@ -26,16 +26,19 @@ function Card(props) {
                 Authorization: 'Bearer ' + brandApikey,
             },
         };
-
+    
         try {
             const response = await axios.get(`https://api.brandfetch.io/v2/brands/${encodeURIComponent(brand)}`, options);
-            const logo = response.data.logos.find((logo) => logo.type === 'logo');
+            const logo = response.data.logos.filter((logo) => {
+                return (logo.type === 'logo' && (darkMode ? logo.theme === 'light' : logo.theme === 'dark'))
+            })[0];
             return logo ? logo.formats[0].src : '/Images/nullImageUrl.png';
         } catch (error) {
             console.error('Brandfetch API Error:', error);
             return '/Images/nullImageUrl.png';
         }
     };
+    
 
 
     useEffect(() => {
@@ -43,22 +46,31 @@ function Card(props) {
             try {
                 const titlestring=title.split(' ')
                 const querytitle=titlestring[0]+' '+titlestring[1]
-                const response = await axios.get('https://newsapi.org/v2/everything?q=' + encodeURI(querytitle) + '&pageSize=3&sortBy=publishedAt&apiKey=' + NewsApiKey);
+                const response = await axios.get('https://newsapi.org/v2/everything?q=' + encodeURI(querytitle) + '&pageSize=6&sortBy=publishedAt&apiKey=' + NewsApiKey);
                 console.log('related news', response.data.articles)
                 const threeRelatedNews = response.data.articles.map(article => ({
                     title: article.title,
+                    source: article.author,
                     url: article.url,
-                    urlToImage: article.urlToImage,
                     hours: hoursAgo(article.publishedAt),
                     source: article.source.name,
                     brandLogoUrl: '',
-                }));
-                console.log('threeRelatedNews', threeRelatedNews)
-                await Promise.all(threeRelatedNews.map(async (news) => {
+                })).filter((article) => article.title !== title && article.source !== source && article.title!='[Removed]').slice(0, 3);
+               
+                const logosUrl = await Promise.allSettled(threeRelatedNews.map(async (news) => {
                     const url = new URL(news.url).hostname;
-                    const brandLogoUrl = await brandLogoImageUrl(encodeURIComponent(url), brandApiKey);
-                    news['brandLogoUrl'] = brandLogoUrl || '/Images/nullImageUrl.png';
+                    return brandLogoImageUrl(encodeURIComponent(url), brandApiKey);
                 }));
+                
+                threeRelatedNews.forEach((news, index) => {
+                    if (logosUrl[index].status === 'fulfilled') {
+                        news['brandLogoUrl'] = logosUrl[index].value || '/Images/nullImageUrl.png';
+                    } else {
+                        // Handle the case when the promise is rejected
+                        news['brandLogoUrl'] = '/Images/nullImageUrl.png';
+                    }
+                });
+                
                 const mainurl = new URL(mainNews.url).hostname;
 
                 const mainBrandLogo = await brandLogoImageUrl(mainurl, brandApiKey) || '/Images/nullImageUrl.png';
@@ -75,18 +87,18 @@ function Card(props) {
         };
 
         fetchNewsData();
-    }, [title, source]);
+    }, []);
 
 
     return (
-        <div className="mt-8 maincard bg-[#1f1f1f] text-white h-[350px] flex justify-between w-full space-x-1 p-2 border-t-[1px] border-t-[#1f1f1f] rounded-t-lg border-b-[1px] border-b-white">
-            <div className='card p-1 rounded-lg overflow-hidden w-72 h-[330px] '>
+        <div className="mt-8 maincard bg-[#1f1f1f] text-white h-[350px] justify-between flex w-full space-x-1 p-2 border-t-[1px] border-t-[#1f1f1f] rounded-t-lg border-b-[1px] border-b-white">
+            <div className='card p-1 rounded-lg overflow-hidden w-[40%] h-[330px] '>
                 {mainNews.urlToImage && (
                     <img className='w-full h-[50%] rounded-lg' src={mainNews.urlToImage} alt="" />
                 )}
                 <div className="cardcontent mt-2 p-2 h-[45%] flex flex-col justify-between space-y-2">
                     {mainNews.brandLogoUrl && (
-                        <img src={mainNews.brandLogoUrl} className='h-4 w-12' alt="" />
+                        <img src={mainNews.brandLogoUrl} className='h-4 w-16' alt="" />
                     )}
                     <div className="textcontent h-20">
                         <a href={mainNews.url}>
@@ -100,14 +112,21 @@ function Card(props) {
             </div>
 
             {mainNews.threeRelatedNews.length !== 0 ? (
-                <div className="relatednews px-3 py-4 space-y-3">
+                <div className="relatednews px-3  space-y-5 w-[50%]">
                     {/* Render related news based on whether brandLogoUrl is available */}
                     {mainNews.threeRelatedNews.map((relatedNews, index) => (
-                        <div key={index}>
+                        <div key={index} className='flex flex-col space-y-2'>
                             {relatedNews.brandLogoUrl && (
-                                <img src={relatedNews.brandLogoUrl} className='h-4 w-12' alt="" />
+                                <div className='flex space-x-1 items-center'>
+                                    {/* <div className='bg-white p-1'> */}
+
+                                    <img src={relatedNews.brandLogoUrl} className='h-4 w-7' alt="" />
+                                    {/* </div> */}
+                                    <span className='text-sm font-Google'>{relatedNews.source}</span>
+                                </div>
                             )}
-                            <p className='leading-4'>{relatedNews.title}</p>
+                            <a href={relatedNews.url}> <p className='leading-4'>{relatedNews.title}</p></a>
+                           
                             <span className='text-sm'>{relatedNews.hours} hours ago</span>
                         </div>
                     ))}
