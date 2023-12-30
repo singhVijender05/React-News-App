@@ -2,7 +2,7 @@ import React from 'react'
 import {ColorRing} from 'react-loader-spinner'
 function Loadingbar() {
   return (
-    <div className='flex justify-center bg-white pt-4'>
+    <div className='flex justify-center  pt-4'>
 
         <ColorRing
       visible={true}

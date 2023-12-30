@@ -22,18 +22,17 @@ function App() {
     'PBoyVn+1l7nMgP+mSUm/290xTnZ/UPBA/aDNvYXpN5I='
   ];
   const [darkMode, setDarkMode] = useState(1)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const brandApiKey = brandApiKeys[Math.floor(Math.random() * brandApiKeys.length)];
-  const NewsApiKey = "680ac1189bc246bebe1c999497ab4b3f";
+  const NewsApiKey = "5592b2f9ee6e4433b008774c919b018e";
   const weatherApi="cd8345a2878c48679d271435231607"
   const categories = ['', 'India', 'World', 'Local', 'Business', 'Technology', 'Entertainment', 'Sports', 'Science']
   const categoryRequestFormat =
   {
-    '':    [apiPrefix + 'top-headlines?country=in&pageSize=10&apiKey=' + NewsApiKey],
-    'For You': [apiPrefix + 'top-headlines?country=in&category=technology,sports,general,politics&pageSize=10&apiKey=' + NewsApiKey],
-    'India': [apiPrefix + 'everything?country=in&pageSize=10&apiKey=' + NewsApiKey],
+    '':    [apiPrefix + 'everything?q=haryana&sortBy=publishedAt&pageSize=10&apiKey=' + NewsApiKey],
+    'India': [apiPrefix + 'top-headlines?country=in&pageSize=10&apiKey=' + NewsApiKey],
     'World': [apiPrefix + 'top-headlines?pageSize=10&apiKey=' + NewsApiKey],
-    'Local': [apiPrefix + 'top-headlines?country=in&q=Banglore&pageSize=10&apiKey=' + NewsApiKey],
+    'Local': [apiPrefix + 'top-headlines?q=Bengaluru&pageSize=10&apiKey=' + NewsApiKey],
     'Business': [apiPrefix + 'top-headlines?country=in&category=business&pageSize=10&apiKey=' + NewsApiKey],
     'Technology': [apiPrefix + 'top-headlines?country=in&category=technology&pageSize=10&apiKey=' + NewsApiKey],
     'Entertainment': [apiPrefix + 'top-headlines?country=in&category=entertainment&pageSize=10&apiKey=' + NewsApiKey],
@@ -50,6 +49,8 @@ function App() {
     categories.forEach(category => {
       initialState[category] = {
         articles: [],
+        totalResults: 0,
+        page:1,
         lastUpdated: null
       };
     });
@@ -58,16 +59,17 @@ function App() {
 
 
   
-  const updateCategoryNews = async (category) => {
+  const updateCategoryNews = async (category,page) => {
     console.log('Updating news for category:', category);
-    setLoading(true);
     try {
-      const response = await axios.get(categoryRequestFormat[category][0]);
+      const response = await axios.get(categoryRequestFormat[category][0]+`&page=${page}`);
   
       setNewsStates((prevNewsStates) => ({
         ...prevNewsStates,
         [category]: {
-          articles: response.data.articles,
+          articles: newsStates[category].articles.concat(response.data.articles),
+          totalResults: response.data.totalResults,
+          page:page,
           lastUpdated: new Date()
         }
       }));
@@ -95,7 +97,7 @@ function App() {
       // Check if articles for the default category ('') are already present
       if (newsStates[''].articles.length === 0) {
         // If not, make the API request
-        await updateCategoryNews('');
+        await updateCategoryNews('',1);
       }
     };
   
@@ -126,4 +128,5 @@ function App() {
 
 export default App
 
-// e01a7b4366cf4dfdae4a3ab1f752c360
+// 680ac1189bc246bebe1c999497ab4b3f
+// 5592b2f9ee6e4433b008774c919b018e

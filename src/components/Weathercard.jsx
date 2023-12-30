@@ -27,10 +27,10 @@ function Weathercard({ category }) {
 
 
   return (
-    <div className='bg-[#292a2d] flex justify-between'>
+    <div className='bg-[#292a2d] flex justify-between '>
       <h1 className='text-3xl py-2 px-3 text-white'>{category ? category : "Home"}</h1>
-      <div className='bg-[#292a2d] flex border-[1px] p-2 items-center space-x-3 text-white border-red-500 rounded-xl w-48 h-16'>
-        <img className='w-8 h-8' src={weather.current?.condition?.icon || './Images/default_weather.jpeg'} alt="" />
+      <div className='bg-[#292a2d] flex border-[1px] p-2 items-center space-x-3 text-white rounded-xl w-48 h-16'>
+        <img className='size-11' src={weather.current?.condition?.icon || './Images/default_weather.jpeg'} alt="" />
         <div>
           <div className='flex text-nowrap items-center'>
             <span className='mr-2 text-xs'>{weather?.location?.name || "Your local weather"}</span>

@@ -112,7 +112,7 @@ function Card(props) {
             </div>
 
             {mainNews.threeRelatedNews.length !== 0 ? (
-                <div className="relatednews px-3  space-y-5 w-[50%]">
+                <div className="relatednews px-3  space-y-2 w-[50%]">
                     {/* Render related news based on whether brandLogoUrl is available */}
                     {mainNews.threeRelatedNews.map((relatedNews, index) => (
                         <div key={index} className='flex flex-col space-y-2'>
@@ -120,12 +120,12 @@ function Card(props) {
                                 <div className='flex space-x-1 items-center'>
                                     {/* <div className='bg-white p-1'> */}
 
-                                    <img src={relatedNews.brandLogoUrl} className='h-4 w-7' alt="" />
+                                    <img src={relatedNews.brandLogoUrl} className='aspect-16/9 max-w-10 max-h-4 border-[1px] p-1' alt="" />
                                     {/* </div> */}
                                     <span className='text-sm font-Google'>{relatedNews.source}</span>
                                 </div>
                             )}
-                            <a href={relatedNews.url}> <p className='leading-4'>{relatedNews.title}</p></a>
+                            <a href={relatedNews.url}> <p className=''>{relatedNews.title}</p></a>
                            
                             <span className='text-sm'>{relatedNews.hours} hours ago</span>
                         </div>
