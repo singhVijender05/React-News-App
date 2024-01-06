@@ -98,7 +98,7 @@ function Card(props) {
                 )}
                 <div className="cardcontent mt-2 p-2 h-[45%] flex flex-col justify-between space-y-2">
                     {mainNews.brandLogoUrl && (
-                        <img src={mainNews.brandLogoUrl} className='h-4 w-16' alt="" />
+                        <img src={mainNews.brandLogoUrl} className='aspect-16/9 max-w-10 max-h-6' alt="" />
                     )}
                     <div className="textcontent h-20">
                         <a href={mainNews.url}>
@@ -120,7 +120,7 @@ function Card(props) {
                                 <div className='flex space-x-1 items-center'>
                                     {/* <div className='bg-white p-1'> */}
 
-                                    <img src={relatedNews.brandLogoUrl} className='aspect-16/9 max-w-10 max-h-4 border-[1px] p-1' alt="" />
+                                    <img src={relatedNews.brandLogoUrl} className='aspect-16/9 max-w-10 max-h-6 border-[1px] p-1' alt="" />
                                     {/* </div> */}
                                     <span className='text-sm font-Google'>{relatedNews.source}</span>
                                 </div>

@@ -23,8 +23,10 @@ function App() {
   ];
   const [darkMode, setDarkMode] = useState(1)
   const [loading, setLoading] = useState(true)
-  const brandApiKey = brandApiKeys[Math.floor(Math.random() * brandApiKeys.length)];
-  const NewsApiKey = "5592b2f9ee6e4433b008774c919b018e";
+  const [flag,setFlag]=useState(0)
+  const brandApiKey = brandApiKeys[flag];
+  const NewsApiKey = "73c9011f0e3e4d4b9a7305b14be550f1";
+  //5592b2f9ee6e4433b008774c919b018e
   const weatherApi="cd8345a2878c48679d271435231607"
   const categories = ['', 'India', 'World', 'Local', 'Business', 'Technology', 'Entertainment', 'Sports', 'Science']
   const categoryRequestFormat =
@@ -33,7 +35,7 @@ function App() {
     'India': [apiPrefix + 'top-headlines?country=in&pageSize=10&apiKey=' + NewsApiKey],
     'World': [apiPrefix + 'top-headlines?pageSize=10&apiKey=' + NewsApiKey],
     'Local': [apiPrefix + 'top-headlines?q=Bengaluru&pageSize=10&apiKey=' + NewsApiKey],
-    'Business': [apiPrefix + 'top-headlines?country=in&category=business&pageSize=10&apiKey=' + NewsApiKey],
+    'Business': [apiPrefix + 'top-headlines?sources=moneycontrol&country=in&category=business&pageSize=10&apiKey=' + NewsApiKey],
     'Technology': [apiPrefix + 'top-headlines?country=in&category=technology&pageSize=10&apiKey=' + NewsApiKey],
     'Entertainment': [apiPrefix + 'top-headlines?country=in&category=entertainment&pageSize=10&apiKey=' + NewsApiKey],
     'Sports': [apiPrefix + 'top-headlines?country=in&category=sports&pageSize=10&apiKey=' + NewsApiKey],
@@ -61,6 +63,8 @@ function App() {
   
   const updateCategoryNews = async (category,page) => {
     console.log('Updating news for category:', category);
+    setFlag((prevFlag)=>(prevFlag+1)%13)
+
     try {
       const response = await axios.get(categoryRequestFormat[category][0]+`&page=${page}`);
   
@@ -105,6 +109,7 @@ function App() {
     console.log('App component mounted');
     console.log(newsStates)
   }, []); 
+
 
   return (
     <div className='relative bg-[#292a2d] font-Google font-medium'>

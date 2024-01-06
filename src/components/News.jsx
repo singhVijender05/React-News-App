@@ -25,7 +25,7 @@ function News(props) {
   return (
     <>
     {
-      loading && <Loadingbar />
+      loading && <Loadingbar loading={loading}/>
     }
     <div className='mx-auto w-[70%] mt-5'>
      
