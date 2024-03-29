@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import {useNavigate} from 'react-router-dom'
 import Navbar from '../src/components/Navbar'
-import News from '../newsapp/src/components/News'
+import News from '../src/components/News'
 import axios from 'axios'
 
 function App() {
