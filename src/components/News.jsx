@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Card from '../components/Card.jsx';
+import Card from '../../src/components/Card.jsx';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loadingbar from '../components/Loadingbar.jsx';
 import Weathercard from '../components/Weathercard';

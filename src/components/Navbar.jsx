@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { IoSearchOutline } from "react-icons/io5";
-import Socialhandles from "../components/Socialhandles"
+import Socialhandles from "../../components/Socialhandles";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMoonOutline } from "react-icons/io5";
