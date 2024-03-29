@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import Card from './Card';
+import Card from '../components/Card.jsx';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Loadingbar from './Loadingbar';
-import Weathercard from './Weathercard';
+import Loadingbar from '../components/Loadingbar.jsx';
+import Weathercard from '../components/Weathercard';
 
 function News(props) {
   const { newsStates, categoryRequestFormat, darkMode, updateCategoryNews,  NewsApiKey,loading ,customQuery} = props.propsForNews;
@@ -15,8 +15,6 @@ function News(props) {
       if (newsStates[category].articles.length === 0) {
        await updateCategoryNews(category,1);
       }
-      console.log('News component mounted');
-      console.log(newsStates)
     };
 
     fetchData();
@@ -43,10 +41,9 @@ function News(props) {
         >
           {newsStates[category].articles.map((article, index) => {
             return (
-              <div className={`maincard ${index==0? 'rounded-t-lg' : ''} ${darkMode? 'bg-[#1f1f1f] text-white ': 'bg-[#7291C0] text-black '} border-b-[1px] border-b-white  h-[350px] justify-between flex w-full space-x-1 p-2  `}>
+              <div key={index} className={`maincard ${index==0? 'rounded-t-lg' : ''} ${darkMode? 'bg-[#1f1f1f] text-white ': 'bg-[#7291C0] text-black '} border-b-[1px] border-b-white  h-[350px] justify-between flex w-full space-x-1 p-2  `}>
 
               <Card
-              key={index}
               title={article.title}
               url={article.url}
               urlToImage={article.urlToImage}

@@ -18,23 +18,28 @@ function Card(props) {
         const hours = Math.abs(new Date() - date) / (1000 * 60 * 60);
         return Math.round(hours);
     }
-  
+     
     useEffect(() => {
         const fetchNewsData = async () => {
             try {
-                const titlestring=title.split(' ')
-                const querytitle=titlestring[0]+' '+titlestring[1]
-                const response = await axios.get('https://newsapi.org/v2/everything?q=' + encodeURI(querytitle) + '&pageSize=6&sortBy=publishedAt&apiKey=' + NewsApiKey);
-                console.log('related news', response.data.articles)
+                let response=null;
+                let i=0;
+                let querytitle = title;
+                do{
+                    querytitle = title.split(' ').slice(i, i+2).join(' ');
+                    response = await axios.get('https://newsapi.org/v2/everything?q=' + encodeURI(querytitle) + '&pageSize=6&sortBy=publishedAt&apiKey=' + NewsApiKey);
+                    i+=1
+                }while(response.data.articles.length==0);
+
                 const threeRelatedNews = response.data.articles.map(article => ({
                     title: article.title,
                     source: article.author,
                     url: article.url,
                     hours: hoursAgo(article.publishedAt),
                     source: article.source.name,
-                })).filter((article) => article.title !== title && article.source !== source && article.title!='[Removed]').slice(0, 3);
+                })).filter((article) => article.title !== title  && article.title!='[Removed]').slice(0, 3);
                
-              
+            
 
                 updateMainNews((prevMainNews) => ({
                     ...prevMainNews,
@@ -48,13 +53,13 @@ function Card(props) {
 
         fetchNewsData();
     }, []);
-
+   
 
     return (
         <>
                   <div className='card p-1 rounded-lg overflow-hidden w-[40%] h-[330px] '>
                  
-                    <img className='w-full h-[50%] rounded-lg' src={mainNews.urlToImage || '/public/Images/noimg.jpg'} alt="" />
+                    <img className='w-[80%] h-[50%] rounded-lg' src={mainNews.urlToImage || '/public/Images/noimg.jpg'} alt="" />
                 
 
                 <div className="cardcontent mt-2 py-1 h-[45%] flex flex-col justify-between space-y-2">
@@ -64,7 +69,7 @@ function Card(props) {
                     <span className='text-sm font-Google'>{mainNews.source}</span>
 
                     <div className="textcontent h-20">
-                        <a href={mainNews.url}>
+                        <a href={mainNews.url} target='_blank'>
                             <p className='text-xl font-normal leading-6 line-clamp-3'>
                                 {mainNews.title}
                             </p>
@@ -78,14 +83,14 @@ function Card(props) {
                 <div className="relatednews px-3  space-y-[10px] w-[50%]">
                     {/* Render related news based on whether brandLogoUrl is available */}
                     {mainNews.threeRelatedNews.map((relatedNews, index) => (
-                        <div key={index} className='flex flex-col space-y-1'>
+                        <div key={index} className='flex flex-col space-y-[6px]'>
                              
                                 <div className='flex items-center'>
                              
                                     <span className='text-sm font-Google'>{relatedNews.source}</span>
                                 </div>
                             
-                            <a href={relatedNews.url}> <p className=''>{relatedNews.title}</p></a>
+                            <a target='_blank' href={relatedNews.url}> <p className='line-clamp-2'>{relatedNews.title}</p></a>
                            
                             <span className='text-xs'>{relatedNews.hours} hours ago</span>
                             {

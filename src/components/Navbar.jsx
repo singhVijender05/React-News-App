@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import newslogo from '/Images/newslogo.jpg'
-import newslogo2 from '/Images/newslogo2.png' 
-import linkedinlogo from '/Images/linkedin.jpeg'
 import { IoSearchOutline } from "react-icons/io5";
-import Socialhandles from "./Socialhandles"
+import Socialhandles from "../components/Socialhandles"
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMoonOutline } from "react-icons/io5";
@@ -26,17 +23,11 @@ function Navbar({categories,changeThemeMode,showCustomQuery,darkMode}) {
   }
   useEffect(() => {
     const e = document.getElementById('setting');
-    const socialbox = document.getElementById('socialbox');
   
     if (e) {
       settingOn ? e.classList.add('-rotate-45') : e.classList.remove('-rotate-45');
     }
     
-    if (settingOn && socialbox) {
-      socialbox.classList.add('rotate-45');
-    } else if (socialbox) {
-      socialbox.classList.remove('rotate-45');
-    }
   }, [settingOn]);
   
 
@@ -54,13 +45,13 @@ function Navbar({categories,changeThemeMode,showCustomQuery,darkMode}) {
         <div className="navdarkmode w-1/4 flex justify-between py-1 px-4 items-center ">
             <div className='space-x-2 flex items-center'><span className='inline-block p-1'><IoHelpCircleOutline className='h-7 w-8 cursor-pointer ' />
                 </span>
-                
-                <span id='setting' onClick={handleSettingBtn} className='inline-block p-1 relative cursor-pointer'><IoSettingsOutline className='h-6 w-7 cursor-pointer ' />
+                <div className="socialhandles relative flex items-center">
+                <span id='setting' onClick={handleSettingBtn} className='inline-block p-1 cursor-pointer shadow-white shad'><IoSettingsOutline className='h-6 w-7 cursor-pointer ' /></span>
                  {
-                  settingOn? <div id='socialbox' className=''><Socialhandles/></div>:''
+                  settingOn? <div id='socialbox' className=''><Socialhandles /></div>:''
                  }
-                 
-                </span>
+                </div>
+                
                 
             </div>
             <div className='flex items-center space-x-2'><span className='inline-block p-1'><IoMoonOutline onClick={()=>changeThemeMode()} className=' cursor-pointer h-7 w-8 '/>

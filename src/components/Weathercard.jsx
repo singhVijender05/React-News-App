@@ -7,7 +7,7 @@ import axios from 'axios';
 function Weathercard({ category,customQuery ,darkMode}) {
 
   const [weather, setWeather] = useState({})
-  const [city, setCity] = useState('New Delhi');
+  const [city, setCity] = useState('Bangalore');
   
   const setCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
