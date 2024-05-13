@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import {useNavigate} from 'react-router-dom'
-import Navbar from './components/Navbar'
-import News from './components/News'
+import Navbar from './components/Navbar.jsx'
+import News from './components/News.jsx'
 import axios from 'axios'
 
 function App() {
