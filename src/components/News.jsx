@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import Card from '../../src/components/Card.jsx';
+import Card from './Card.jsx';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Loadingbar from '../components/Loadingbar.jsx';
-import Weathercard from '../components/Weathercard';
+import Loadingbar from './Loadingbar.jsx';
+import Weathercard from './Weathercard.jsx';
 
 function News(props) {
   const { newsStates, categoryRequestFormat, darkMode, updateCategoryNews,  NewsApiKey,loading ,customQuery} = props.propsForNews;
